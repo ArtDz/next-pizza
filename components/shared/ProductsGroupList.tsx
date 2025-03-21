@@ -6,10 +6,11 @@ import { cn } from '@/lib/utils'
 import { ProductCard } from '@/components/shared/ProductCard'
 import { useIntersection } from 'react-use'
 import { useCategoryStore } from '@/store/category'
+import { ProductWithRelations } from '@/@types/prisma'
 
 interface Props {
   title: string
-  items: any[]
+  items: ProductWithRelations[]
   categoryId: number
   className?: string
   listClassName?: string
@@ -42,13 +43,14 @@ export const ProductsGroupList: FC<Props> = ({
       <Title text={title} size='lg' className='mb-5 font-extrabold' />
 
       <div className={cn('grid grid-cols-3 gap-[50px]', listClassName)}>
-        {items.map((item, i) => (
+        {items.map((item) => (
           <ProductCard
             id={item.id}
-            key={i}
-            name='Маргарита'
-            imageUrl='https://media.dodostatic.net/image/r:292x292/11EE7D610BBEB562BD4D48786AD87270.webp'
-            price={390}
+            key={item.id}
+            name={item.name}
+            imageUrl={item.imageUrl}
+            price={item.variants?.[0].price}
+            ingredients={item.ingredients}
           />
         ))}
       </div>
